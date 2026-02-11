@@ -1,0 +1,14 @@
+.logo-rubinner.jpg
+{
+height: 150;
+width: auto;
+}
+.container-fluid
+{
+    display: flex;
+    justify-content: center;
+}
+body
+{
+    margin: 0;
+}

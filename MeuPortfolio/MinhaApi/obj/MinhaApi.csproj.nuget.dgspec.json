@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Windows\\Documents\\MeuPortfolio\\MinhaApi\\MinhaApi.csproj": {}
+    "C:\\Users\\Windows\\Documents\\Barbearia-Gregorios\\MeuPortfolio\\MinhaApi\\MinhaApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Windows\\Documents\\MeuPortfolio\\MinhaApi\\MinhaApi.csproj": {
+    "C:\\Users\\Windows\\Documents\\Barbearia-Gregorios\\MeuPortfolio\\MinhaApi\\MinhaApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Windows\\Documents\\MeuPortfolio\\MinhaApi\\MinhaApi.csproj",
+        "projectUniqueName": "C:\\Users\\Windows\\Documents\\Barbearia-Gregorios\\MeuPortfolio\\MinhaApi\\MinhaApi.csproj",
         "projectName": "MinhaApi",
-        "projectPath": "C:\\Users\\Windows\\Documents\\MeuPortfolio\\MinhaApi\\MinhaApi.csproj",
+        "projectPath": "C:\\Users\\Windows\\Documents\\Barbearia-Gregorios\\MeuPortfolio\\MinhaApi\\MinhaApi.csproj",
         "packagesPath": "C:\\Users\\Windows\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Windows\\Documents\\MeuPortfolio\\MinhaApi\\obj\\",
+        "outputPath": "C:\\Users\\Windows\\Documents\\Barbearia-Gregorios\\MeuPortfolio\\MinhaApi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Windows\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -44,9 +44,17 @@
         "net10.0": {
           "targetAlias": "net10.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[10.0.3, )"
+            },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[10.0.1, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[10.1.4, )"
             }
           },
           "imports": [

@@ -1,14 +1,33 @@
-.logo-rubinner.jpg
+.dropdown-item
 {
-height: 150;
-width: auto;
+    color:white;
+    background-color: rgb(99, 92, 92);
 }
-.container-fluid
+.nav-link dropdown-toggle
 {
-    display: flex;
-    justify-content: center;
+    color:white;
+    background-color: black;
 }
-body
+.nav-link {
+    color: white !important;
+}
+
+.nav-link:hover {
+    color: gold !important;
+}
+.h1
 {
-    margin: 0;
+    color: black;
+    background-color: black;
+}
+.p
+{
+    color: black;
+    background-color: black;
+}
+.hero {
+    background-image: url('assets/img/7021b');
+    background-size: cover;
+    background-position: center;
+    padding: 100px 0;
 }

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="icon" type="image/png" href="assets/img/logo-rubinner.jpg">
+    <title>Barbearia Gregorio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <div class="container position-relative">
+        <a class="navbar-brand text-center" href="index.html">Barbearia Gregorio</a>
+    </div>
+  </div>
+        </nav>
+        <body>
+            <h2>Login</h2>
+
+<input type="email" id="email" placeholder="Email">
+<br><br>
+<input type="password" id="senha" placeholder="Senha">
+<br><br>
+<button onclick="fazerLogin()">Entrar</button>
+
+<script>
+function fazerLogin() {
+
+    const email = document.getElementById("email").value;
+    const senha = document.getElementById("senha").value;
+
+    fetch("https://localhost:5165/api/auth/login", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        email: email,
+        senha: senha
+    })
+})
+    .then(res => res.json())
+    .then(data => {
+        console.log(data);
+
+        if(data.token){
+            localStorage.setItem("token", data.token);
+            alert("Login realizado com sucesso!");
+        } else {
+            alert("Erro no login");
+        }
+    })
+    .catch(err => console.error(err));
+}
+</script>
+        </body>

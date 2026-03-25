@@ -1,7 +1,7 @@
 using Barbearia.Data;
 using Barbearia.Models;
 
-namespace MinhaApi.Repositories
+namespace Barbearia.Repositories
 {
     public class AgendamentoRepository
     {

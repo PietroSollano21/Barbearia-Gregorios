@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Barbearia.Models;
 
-namespace MinhaApi.Data
+namespace Barbearia.Data
 {
     public class AppDbContext : DbContext
     {
@@ -10,5 +10,6 @@ namespace MinhaApi.Data
         }
 
         public DbSet<Agendamento> Agendamentos { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
     }
 }

@@ -1,8 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Barbearia.Data;
 using Barbearia.Models;
+using BCrypt.Net;
 
-namespace MinhaApi.Controllers
+namespace Barbearia.Controllers
 {
     [ApiController]
 [Route("api/[controller]")]

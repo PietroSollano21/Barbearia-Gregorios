@@ -1,4 +1,4 @@
-namespace MinhaApi.Enums
+namespace Barbearia.Enums
 {
     public enum TipoCorte
     {

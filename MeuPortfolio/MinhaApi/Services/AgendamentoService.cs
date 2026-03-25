@@ -1,6 +1,6 @@
 using Barbearia.Models;
 
-namespace  MinhaApi.Services
+namespace  Barbearia.Services
 {
    public class AgendamentoService
    {

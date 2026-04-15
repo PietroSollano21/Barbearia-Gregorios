@@ -3,6 +3,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Barbearia.Models;
+using Barbearia.Repositories;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -36,5 +38,24 @@ public class AuthController : ControllerBase
         {
             token = tokenHandler.WriteToken(token)
         });
+    }
+    private readonly UsuarioRepository _repo;
+    public AuthController(UsuarioRepository repo)
+    {
+        _repo = repo;
+    }
+    [HttpPost("register")]
+    public IActionResult Register(Usuario usuario)
+    {
+        _repo.Cadastrar(usuario);
+        return Ok("Usuário cadastrado com sucesso!");
+    }
+    [HttpPost("login2")]
+    public IActionResult Login([FromBody]Usuario usuario)
+    {
+        var user = _repo.Login(usuario.Email, usuario.SenhaHash);
+    if (user==null)
+    return Unauthorized("Email ou senha inválidos");
+    return Ok(user);
     }
 }

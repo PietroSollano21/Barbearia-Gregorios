@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="icon" type="image/png" href="assets/img/logo-rubinner.jpg">
+    <title>Barbearia Gregorio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <div class="container position-relative">
+        <a class="navbar-brand text-center" href="../index.html">Barbearia Gregorio</a>
+    </div>
+        <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle"
+       href="#"
+       role="button"
+       data-bs-toggle="dropdown"
+       aria-expanded="false">
+        Opções
+    </a>
+
+    <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="abc.html">Minha Conta</a></li>
+        <li><a class="dropdown-item" href="def.html">Cortes</a></li>
+        <li><hr class="dropdown-divider"></li>
+    </ul>
+    </ul>
+</nav>
+    <form>
+        <h3>Agendar Corte</h3>
+
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome" placeholder="Digite Seu nome">
+        <br><br>
+        <label for="data">data:</label>
+        <input type="date" id="data" name="data" required>
+        <br><br>
+        <label for="hora">Hora:</label>
+        <select type="time" id="hora" name="hora" required>
+        <option value="">Selecione um horário</option>
+        <option value="08:00">08:00</option>
+        <option value="08:15">08:15</option>
+        <option value="08:30">08:30</option>
+        <option value="08:45">08:45</option>
+        <option value="09:00">09:00</option>
+        <option value="09:15">09:15</option>
+        <option value="09:30">09:30</option>
+        <option value="09:45">09:45</option>
+        <option value="10:00">10:00</option>    
+        </select>
+    </label>
+        
+       
+        <p>Escolha um serviço</p>
+        <label>
+            <input type="radio" name="Corte" value="Degrade" required>
+            Degrade - R$ 30,00
+        </label><br>
+        <label>
+            <input type="radio" name="Corte" value="Social" required>
+            Social - R$ 25,00
+        </label><br>
+        <label>
+            <input type="radio" name="Corte" value="Corte e Barba" required>
+            Corte e Barba - R$ 35,00
+        </label><br>
+    
+        <button type="submit">Agendar</button>
+    </form>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    </body>
+    </body>

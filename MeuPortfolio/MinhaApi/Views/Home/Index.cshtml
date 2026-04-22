@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="icon" type="image/png" href="assets/img/logo-rubinner.jpg">
+    <title>Barbearia Gregorio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <div class="container position-relative">
+        <a class="navbar-brand text-center" href="Index.cshtml">Barbearia Gregorio</a>
+    </div>
+        <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle"
+       href="#"
+       role="button"
+       data-bs-toggle="dropdown"
+       aria-expanded="false">
+        Opções
+    </a>
+
+    <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="Views/abc.html">Minha Conta</a></li>
+        <li><a class="dropdown-item" href="Views/def.html">Cortes</a></li>
+        <li><hr class="dropdown-divider"></li>
+    </ul>
+    </ul>
+</li>
+  </div>
+        </nav>
+        <section class="hero">
+    <div class="container text-center text-black">
+        <h1>Seu estilo começa aqui</h1>
+        <h1>Não tem uma conta?</h1>
+        <a href="/Usuario/Cadastro" class="btn btn-warning">Crie uma Conta!</a>
+        <h1>Já tem uma conta?</h1>
+        <a href="/Usuario/Login" class="btn btn-warning">Faça Login!</a>
+    </div>
+</section>
+<script>
+    fetch("/eu", {credentials: "include"})
+    .then(res =>{
+    }
+    })
+    .then(data =>{
+        document.body.innerHTML += `<h1>Bem Vindo, ${data.nome}</h1>`;
+    });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    </body>

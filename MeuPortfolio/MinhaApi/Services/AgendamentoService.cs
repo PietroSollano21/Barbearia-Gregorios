@@ -21,6 +21,8 @@ namespace  Barbearia.Services
                     agendamento.Valor = 0.00m;
                     break;
             }
-    }
+           
+        
    }
+}
 }

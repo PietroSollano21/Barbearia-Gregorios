@@ -1,49 +1,45 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using System.Text;
 using Barbearia.Models;
 using Barbearia.Repositories;
+using System.Net;
+using System.ComponentModel.Design;
+using System.Runtime.CompilerServices;
+using Barbearia.Data;
+using System.Net.Cache;
 
-[ApiController]
-[Route("api/[controller]")]
-public class AuthController : ControllerBase
+
+public class AuthController : Controller
 {
+ private readonly AppDbContext _context;
+ private readonly UsuarioRepository _repo;
+public AuthController(AppDbContext context, UsuarioRepository repo)
+{
+    _context = context;
+    _repo = repo;
+}
     [HttpPost("login")]
-    public IActionResult Login(LoginDTO login)
+    public async Task<IActionResult> Login(LoginDTO login)
     {
-        // Simulação (depois vamos ligar no banco)
-        if (login.Email != "admin@email.com" || login.Senha != "123")
-            return Unauthorized("Email ou senha inválidos");
-
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.UTF8.GetBytes("CHAVE_SUPER_SECRETA_123");
-
-        var tokenDescriptor = new SecurityTokenDescriptor
+        var usuario = _context.Usuarios.FirstOrDefault(u => u.Email == login.Email && u.SenhaHash == login.Senha);
+        if (usuario != null && BCrypt.Net.BCrypt.Verify(login.Senha, usuario.SenhaHash))
         {
-            Subject = new ClaimsIdentity(new[]
-            {
-                new Claim(ClaimTypes.Name, login.Email)
-            }),
-            Expires = DateTime.UtcNow.AddHours(2),
-            SigningCredentials = new SigningCredentials(
-                new SymmetricSecurityKey(key),
-                SecurityAlgorithms.HmacSha256Signature)
-        };
-
-        var token = tokenHandler.CreateToken(tokenDescriptor);
-
-        return Ok(new
-        {
-            token = tokenHandler.WriteToken(token)
-        });
+           var claims = new List<Claim>
+           {
+               new Claim(ClaimTypes.Name, usuario.Email),
+               new Claim("Id", usuario.Id.ToString())
+           };
+              var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+              await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), new AuthenticationProperties { IsPersistent = true });
+              return RedirectToAction("Dashboard", "Home");
+        }
+        ViewBag.Erro = "Email ou senha invalidos";
+        return View("~/Views/Usuario/Login.cshtml");
     }
-    private readonly UsuarioRepository _repo;
-    public AuthController(UsuarioRepository repo)
-    {
-        _repo = repo;
-    }
+   
     [HttpPost("register")]
     public IActionResult Register(Usuario usuario)
     {

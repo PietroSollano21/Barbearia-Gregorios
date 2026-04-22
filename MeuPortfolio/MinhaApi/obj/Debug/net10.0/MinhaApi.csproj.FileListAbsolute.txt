@@ -39,10 +39,11 @@ C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\obj\Debug\n
 C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\obj\Debug\net10.0\MinhaApi.csproj.CoreCompileInputs.cache
 C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\obj\Debug\net10.0\MinhaApi.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\obj\Debug\net10.0\MinhaApi.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\obj\Debug\net10.0\MinhaApi.RazorAssemblyInfo.cache
+C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\obj\Debug\net10.0\MinhaApi.RazorAssemblyInfo.cs
 C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\obj\Debug\net10.0\MinhaApi.sourcelink.json
 C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\bin\Debug\net10.0\appsettings.Development.json
 C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\bin\Debug\net10.0\appsettings.json
-C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\bin\Debug\net10.0\MinhaApi.staticwebassets.runtime.json
 C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\bin\Debug\net10.0\MinhaApi.staticwebassets.endpoints.json
 C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\bin\Debug\net10.0\MinhaApi.exe
 C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\bin\Debug\net10.0\MinhaApi.deps.json
@@ -172,11 +173,6 @@ C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\obj\Debug\n
 C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\obj\Debug\net10.0\rjsmrazor.dswa.cache.json
 C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\obj\Debug\net10.0\rjsmcshtml.dswa.cache.json
 C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\obj\Debug\net10.0\scopedcss\bundle\MinhaApi.styles.css
-C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\obj\Debug\net10.0\compressed\owamup6vn6-{0}-6ztxkvs3l5-6ztxkvs3l5.gz
-C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\obj\Debug\net10.0\compressed\hrk1gganp4-{0}-850t3copl3-850t3copl3.gz
-C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\obj\Debug\net10.0\compressed\a9cj7pco1b-{0}-fqeat9t492-fqeat9t492.gz
-C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\obj\Debug\net10.0\compressed\1tbolu0z4r-{0}-79ye4ttxjw-79ye4ttxjw.gz
-C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\obj\Debug\net10.0\compressed\oos2pvtvqh-{0}-jq29vvdarg-jq29vvdarg.gz
 C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\obj\Debug\net10.0\staticwebassets.build.json
 C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\obj\Debug\net10.0\staticwebassets.build.json.cache
 C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\obj\Debug\net10.0\staticwebassets.development.json
@@ -188,5 +184,3 @@ C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\obj\Debug\n
 C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\obj\Debug\net10.0\MinhaApi.pdb
 C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\obj\Debug\net10.0\MinhaApi.genruntimeconfig.cache
 C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\obj\Debug\net10.0\ref\MinhaApi.dll
-C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\obj\Debug\net10.0\compressed\a49vswbp1g-{0}-66vtpf2aim-66vtpf2aim.gz
-C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\obj\Debug\net10.0\compressed\fyfjpgqpza-{0}-5maa82f5lr-5maa82f5lr.gz

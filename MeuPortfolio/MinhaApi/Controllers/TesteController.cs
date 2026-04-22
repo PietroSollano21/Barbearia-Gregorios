@@ -2,8 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Barbearia.Data;
 using System.Runtime.ExceptionServices;
 
-[ApiController]
-[Route("api/[controller]")]
+
 public class TesteController : ControllerBase
 {
     private readonly Conexao _conexao;

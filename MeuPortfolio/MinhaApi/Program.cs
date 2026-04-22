@@ -1,3 +1,4 @@
+using Barbearia.Data;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Cache;
@@ -6,27 +7,33 @@ using System.Security.Cryptography.X509Certificates;
 using MySql.Data.MySqlClient;
 using Barbearia.Models;
 using Barbearia.Repositories;
-using Barbearia.Data;
-using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
-builder.Services.AddControllers();
+builder.Services.AddControllersWithViews();
 builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<Conexao>();
 builder.Services.AddScoped<UsuarioRepository>();
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseMySql(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))
+    ));
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/login.html";
-        options.AccessDeniedPath = "/login.html";
+        options.LoginPath = "/Usuario/Login";
+        options.LogoutPath = "/Usuario/Logout";
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SameSite = SameSiteMode.Strict;
     });
-
+    builder.Services.AddControllersWithViews();
 var app = builder.Build();
 
 
@@ -35,14 +42,19 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseRouting();
+app.UseAuthentication();
 
 app.UseHttpsRedirection();
-app.UseDefaultFiles();
-app.UseStaticFiles();
-app.UseAuthentication();
-app.UseAuthorization();
 
-app.MapControllers(); 
+app.UseStaticFiles();
+
+app.UseAuthorization();
+app.UseAuthorization();
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}"
+); 
 
 app.MapGet("/testar-conexao",() => 
 {
@@ -61,7 +73,7 @@ app.MapGet("/testar-conexao",() =>
 
 
 
-app.MapPost("/cadastro",async (HttpContext context, UsuarioRepository repo) =>
+app.MapPost("/Cadastro",async (HttpContext context, UsuarioRepository repo) =>
 {
     var form = await context.Request.ReadFormAsync();
        var nome = form["nome"].ToString();
@@ -82,58 +94,7 @@ app.MapPost("/cadastro",async (HttpContext context, UsuarioRepository repo) =>
         SenhaHash = SenhaHash
     };
     repo.Cadastrar(usuario);
-    return Results.Redirect("/", false, true);
+    return Results.Redirect("http://localhost:5165/index.html", false, true);
 });
-
-app.MapPost("/login", async(HttpContext context, UsuarioRepository repo)=>
-{
-    var form = await context.Request.ReadFormAsync();
-    var email = form["email"].ToString();
-    var senha = form["senha"].ToString();
-    Console.WriteLine("email recebido: " + email);
-    Console.WriteLine("senha recebida: " + senha);
-    var usuario = repo.BuscaPorEmail(email);
-    if (usuario == null)
-    {
-        return Results.BadRequest("Usuario não encontrado");
-    }
-    bool senhaValida = BCrypt.Net.BCrypt.Verify(senha, usuario.SenhaHash);
-    if (!senhaValida)
-    {
-        return Results.BadRequest("Senha incorreta");
-    }
-    var claims = new List<Claim>
-    {
-        new Claim(ClaimTypes.Name, usuario.Nome),
-        new Claim(ClaimTypes.Email, usuario.Email)
-    };
-    var identity = new ClaimsIdentity(claims,"cookie");
-    var principal = new ClaimsPrincipal(identity);
-    await context.SignInAsync("cookie",principal);
-    return Results.Ok("Login Realizado com Sucesso!");
-});
-app.MapGet("/logout", async (HttpContext context) =>
-{
-    await context.SignOutAsync("cookie");
-    return Results.Redirect("/login.html", false, true);
-});
-app.MapGet("/area-logada",(HttpContext context)=>
-{
-    var nome = context.User.Identity.Name;
-    return Results.Ok($"Bem-vindo, {nome}!");
-})
-.RequireAuthorization();
-app.MapGet("/eu",(HttpContext context)=>
-{
-    if (!context.User.Identity.IsAuthenticated)
-    {
-        return Results.Unauthorized();
-    }
-    return Results.Ok(new
-    {
-        nome = context.User.Identity.Name,
-        email = context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value
-});
-    });
 app.Run();
 

@@ -45,7 +45,7 @@ namespace Barbearia.Repositories
     using (var conexao = new MySqlConnection(connString))
     {
         conexao.Open();
-        string sql = "SELECT Hora FROM agendamentos WHERE DataDia = @data";
+        string sql = "SELECT Hora FROM agendamento WHERE DataDia = @data";
         
         using (var cmd = new MySqlCommand(sql, conexao))
         {

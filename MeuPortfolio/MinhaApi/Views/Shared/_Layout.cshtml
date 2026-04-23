@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css" asp-append-version="true" />
+    <link rel="icon" type="image/png" href="assets/img/logo-rubinner.jpg">
+    <title>Barbearia Gregorio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <div class="container position-relative">
+        <a class="navbar-brand text-center" href="../index.html">Barbearia Gregorio</a>
+    </div>
+        <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle"
+       href="#"
+       role="button"
+       data-bs-toggle="dropdown"
+       aria-expanded="false">
+        Opções
+    </a>
+
+    <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="abc.html">Minha Conta</a></li>
+        <li><a class="dropdown-item" href="def.html">Cortes</a></li>
+        <li><hr class="dropdown-divider"></li>
+    </ul>
+    </ul>
+</nav>
+        <header>
+
+        </header>
+        <main role="main" class="container">
+            @RenderBody()
+        </main>
+        <footer>
+            <p>&copy; 2026 Barbearia Gregorio. Todos os direitos reservados.</p>
+        </footer>
+<script src="~/lib/jquery/jquery.min.js"></script>
+@RenderSection("Scripts", required: false)
+        </body>
+        </html>

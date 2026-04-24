@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -20,11 +21,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<Conexao>();
 builder.Services.AddScoped<UsuarioRepository>();
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseMySql(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
-        ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))
-    ));
+
+   string conexao = "Server=localhost;Database=barbeariadb;user=sollano;password=cavalo;";
+   builder.Services.AddDbContext<AppDbContext>(options =>
+       options.UseMySql(conexao, ServerVersion.AutoDetect(conexao)));
+
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {

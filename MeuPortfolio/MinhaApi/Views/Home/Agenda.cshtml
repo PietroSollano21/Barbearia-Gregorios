@@ -37,7 +37,7 @@
     </script>
 }
 
-    <form method="get" action="/Home/Agenda">
+    <form method="post" action="/Home/ConfirmarAgendamento">
         <h3>Agendar Corte</h3>
 
         <label for="nome">Nome:</label>
@@ -59,7 +59,7 @@
         </select>
     
         
-       
+       <form method="post" action="Home/ConfirmarAgendamento">
         <p>Escolha um serviço</p>
        <label>
         <input type="radio" name="Corte" value="Degrade" required> Degrade - R$ 30,00
@@ -73,7 +73,7 @@
 
     <input type="hidden" name="Valor" value="30.00" /> 
 
-    <button type="submit" href="Dashboard">Confirmar Agendamento</button>
+    <button type="submit" class="btn btn-primary">Confirmar Agendamento</button>
     @Html.AntiForgeryToken()
     </form>
     

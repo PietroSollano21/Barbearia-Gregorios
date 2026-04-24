@@ -5,6 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Barbearia.Data;
+using System.Linq;
+using Barbearia.Controllers;
+using Microsoft.AspNetCore.Authorization;
+using Barbearia.Services;
+
 
 namespace Barbearia.Repositories
 {
@@ -22,6 +27,7 @@ namespace Barbearia.Repositories
             _context.Agendamentos.Add(agendamento);
             _context.SaveChanges();
         }
+        [Authorize]
         public void SalvarAgendamento(Agendamento agendamento)
         {
             using (MySqlConnection conexao = new MySqlConnection(connString))

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Net;
 using System.Net.Mime;
-using System.Security.Claims;
+
 using Microsoft.AspNetCore.Authorization;
 
 namespace Barbearia.Controllers
@@ -68,8 +68,8 @@ namespace Barbearia.Controllers
             }
             else
             {
-            string motivo = usuario == null ? "Email não encontrado" : "Senha incorreta";
-            return Content($"Erro: {motivo}.Email digitado:{email} ");
+            ViewBag.Error = "Email ou senha inválidos.";
+            return View();
             }
         }
         [Authorize]

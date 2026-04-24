@@ -10,6 +10,16 @@ using System.Linq;
 using Barbearia.Models;
 using Barbearia.Data;
 using Barbearia.Repositories;
+using System.Data;
+using System.Security;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using MySql.Data.MySqlClient;
+using Barbearia.Services;
+using MercadoPago.Config;
+using MercadoPago.Client.Payment;
+using MercadoPago.Resource.Payment;
+using System.Security.Cryptography.X509Certificates;
 
 
 public class HomeController : Controller
@@ -23,7 +33,47 @@ public class HomeController : Controller
         }
         return View();
     }
-    
+    [HttpPost]
+         public async Task<IActionResult> ConfirmarAgendamento(string nome, string data, string hora, string corte, string valor)
+        {
+            string Email = User.Identity.Name;
+           
+
+             MercadoPagoConfig.AccessToken = "TEST-7924299277998791-042410-c0ede1ae8aaeb41b355ae90a65caf0bd-2350643855";
+        decimal valorDecimal = Convert.ToDecimal(valor.Replace(",", "."));
+
+        var request = new PaymentCreateRequest
+        {
+            TransactionAmount = valorDecimal,
+            Description = $"Corte: {corte} - Cliente: {nome}",
+            PaymentMethodId= "pix",
+            Payer = new PaymentPayerRequest
+            {
+                Email = Email,
+                FirstName = nome,
+            }
+        };
+        var client = new PaymentClient();
+        Payment payment = await client.CreateAsync(request);
+        Agendamento novo = new Agendamento
+        {
+            NomeCliente = nome,
+            Data = DateTime.Parse(data),
+            Hora = TimeSpan.Parse(hora),
+            Corte = corte,
+            Valor = valorDecimal
+        };
+       new AgendamentoRepository(_context).SalvarAgendamento(novo);
+        var dadosPix = new Pagamento
+        {
+            CopiaECola = payment.PointOfInteraction.TransactionData.QrCode,
+            QrCodeBase64 = payment.PointOfInteraction.TransactionData.QrCodeBase64,
+            Valor = valorDecimal
+        };
+        return View("Pagamento", dadosPix);
+        }
+        
+   
     
     
     [Authorize]
@@ -55,7 +105,7 @@ public class HomeController : Controller
             List<string> todosOsHorarios = new List<string>();
             TimeSpan abertura = new TimeSpan(9, 0, 0);
             TimeSpan fechamento = new TimeSpan(19, 0, 0);
-            TimeSpan intervalo = new TimeSpan(1, 0, 0);
+            TimeSpan intervalo = new TimeSpan(0, 30, 0);
             TimeSpan horarioAtual = abertura;
 
             while (horarioAtual <= fechamento)
@@ -78,4 +128,5 @@ public class HomeController : Controller
 
         return BadRequest("Data inválida");
     }
+        
 }

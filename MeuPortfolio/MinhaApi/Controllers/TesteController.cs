@@ -3,7 +3,7 @@ using Barbearia.Data;
 using System.Runtime.ExceptionServices;
 
 
-public class TesteController : ControllerBase
+public class TesteController : Controller
 {
     private readonly Conexao _conexao;
 

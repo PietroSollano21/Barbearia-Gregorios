@@ -1,0 +1,19 @@
+@{
+    Layout = "_Layout";
+}
+@using Barbearia.Models;
+@model Pagamento
+
+<div class="container text-center">
+    <h2>Falta pouco! Pague com pix para confirmar o agendamento.</h2>
+    <p>Valor a pagar: R$ @Model.Valor</p>
+<div class="mb-4">
+    <img src="data:image/png;base64,@Model.QrCodeBase64" alt="QR Code para pagamento Pix" class="img-fluid" style="max-width: 250px;" />
+</div>
+<div class="form-group">
+    <label for="copiaECola">Copia e Cola do Pix:</label>
+    <textarea class="form-control text-center" readonly>@Model.CopiaECola</textarea>
+</div>
+<br>
+<a href="/Home/Dashboard" class="btn btn-success">Voltar para Pagina Principal</a>
+</div>

@@ -27,6 +27,13 @@ namespace Barbearia.Controllers
         [HttpPost]
         public IActionResult Cadastro(Usuario usuario)
         {
+            var usuarioExistente = _context.Usuarios.FirstOrDefault(u => u.Email == usuario.Email || u.Nome == usuario.Nome); ;
+            if (usuarioExistente != null)
+            {
+                ViewBag.Erro = "Email ou nome já cadastrados.";
+                return View();
+            }
+
             usuario.SenhaHash = BCrypt.Net.BCrypt.HashPassword(usuario.Senha);
 
             _context.Usuarios.Add(usuario);

@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Barbearia.Models;
-using Barbearia.Data;
 using Barbearia.Repositories;
 using System.Data;
 using System.Security;
@@ -20,11 +19,18 @@ using MercadoPago.Config;
 using MercadoPago.Client.Payment;
 using MercadoPago.Resource.Payment;
 using System.Security.Cryptography.X509Certificates;
+using System.Net;
+using System.Reflection.Metadata;
+using System.Net.Mime;
 
 
 public class HomeController : Controller
 {
     private readonly AppDbContext _context;
+    public HomeController(AppDbContext context)
+    {
+        _context = context;
+    }
     public IActionResult Index()
     {
         if(User.Identity.IsAuthenticated)
@@ -72,14 +78,45 @@ public class HomeController : Controller
         };
         return View("Pagamento", dadosPix);
         }
-        
-   
+        [HttpPost]
+        [Route("pagamento/webhook")]
+        public async Task<IActionResult> MercadoPagoWebhook([FromBody] Payment payment)
+        {
+            if (Type == "payment" )
+            {
+               var pagamento = await paymentClient.GetAsync(long.Parse(id));
+               if (pagamento.Status == PaymentStatus.Approved)
+               {
+                   var agendamento = _context.Agendamentos.FirstOrDefault(a => a.Id == pagamento.Id);
+                       agendamento.statuspagamento = "Pago";
+                       _context.SaveChanges();
+                   
+               }
+            }
+
+            return Ok();
+        }
     
     
     [Authorize]
     public IActionResult Dashboard()
-    {
-        return View();
+    { 
+        if (_context == null)
+        {
+            return Content("Err0r: Contexto de banco de dados não disponível.");
+        }
+        if (User == null || User.Identity == null || string.IsNullOrEmpty(User.Identity.Name))
+        {
+            return RedirectToAction("Login", "Usuario");
+        }
+        string emailLogado = User.Identity.Name;
+        var usuario = _context.Usuarios.FirstOrDefault(u => u.Email == emailLogado);
+        if (usuario == null)
+        {
+            return RedirectToAction("Login", "Usuario");
+        }
+        var meusAgendamentos = _context.Agendamentos.Where(a => a.NomeCliente == usuario.Nome).OrderBy(a => a.Data).ToList();
+        return View(meusAgendamentos);
     }
     [Authorize]
     public IActionResult Agenda()

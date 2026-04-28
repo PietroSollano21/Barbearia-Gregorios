@@ -19,6 +19,12 @@
     <br><br>
     <input type="password" id="senha" name="senha" placeholder="Senha" required>
     <br><br>
+    @if (ViewBag.Erro != null)
+    {
+      <div class="alert alert-danger" role="alert">
+        @ViewBag.Erro
+      </div>
+    }
     <button type="submit">Cadastrar</button>
      
 </form>

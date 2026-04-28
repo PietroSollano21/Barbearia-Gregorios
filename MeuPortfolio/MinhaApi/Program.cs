@@ -88,6 +88,7 @@ app.MapPost("/Cadastro",async (HttpContext context, UsuarioRepository repo) =>
         {
             return Results.BadRequest("Email invalido");
         };
+       
     var usuario = new Usuario
     {
         Nome = nome,

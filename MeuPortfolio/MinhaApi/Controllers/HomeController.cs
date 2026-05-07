@@ -116,41 +116,36 @@ public async Task<IActionResult> ConfirmarAgendamento(string nome,string email ,
     
 
 
-        
-        [IgnoreAntiforgeryToken]
+[HttpPost]
+[IgnoreAntiforgeryToken]
 [Route("webhook")]
 public async Task<IActionResult> Webhook([FromQuery(Name = "data.id")] string dataId, [FromQuery] string id, [FromQuery] string type, [FromQuery] string topic)
 {
-    MercadoPagoConfig.AccessToken = "TEST-7924299277998791-042410-c0ede1ae8aaeb41b355ae90a65caf0bd-2350643855";
+   MercadoPagoConfig.AccessToken = "TEST-7924299277998791-042410-c0ede1ae8aaeb41b355ae90a65caf0bd-2350643855";
     string idPagamento = id ?? dataId;
     string tipoEvento = type ?? topic;
-
+    
     try
     {
     if (tipoEvento == "payment" && !string.IsNullOrEmpty(idPagamento))
     {
-       
-        var paymentClient = new PaymentClient();
-        
-        
+        var paymentClient = new PaymentClient(); 
         Payment pagamento = await paymentClient.GetAsync(long.Parse(idPagamento));
-
-        
         if (pagamento.Status == "approved")
         {
             
             int idAgendamento = int.Parse(pagamento.ExternalReference);
-
-           
             var agendamento = await _context.Agendamentos.FindAsync(idAgendamento);
             
             if (agendamento != null)
-            {
-                
+            {    
                 agendamento.statuspagamento = "Pago";
-                await _context.SaveChangesAsync();
-                
+                await _context.SaveChangesAsync();     
             }
+            else
+                    {
+                        return Content("Erro: Agendamento não encontrado para o pagamento ID " + idPagamento);
+                    }
         }
     }
     }
@@ -164,8 +159,6 @@ public async Task<IActionResult> Webhook([FromQuery(Name = "data.id")] string da
         Console.WriteLine($"Erro ao processar webhook: {ex.Message}");
         return StatusCode(500, "Erro interno ao processar webhook");
     }
-   
-    
     return Ok();
 }
    public IActionResult teste()
@@ -225,7 +218,7 @@ public async Task<IActionResult> Webhook([FromQuery(Name = "data.id")] string da
         {
             return RedirectToAction("Login", "Usuario");
         }
-        var meusAgendamentos = _context.Agendamentos.Where(a => a.NomeCliente == usuario.Nome && a.statuspagamento == "approved").OrderBy(a => a.Data).ToList();
+        var meusAgendamentos = _context.Agendamentos.Where(a => a.NomeCliente == usuario.Nome && a.statuspagamento == "pago").OrderBy(a => a.Data).ToList();
         return View(meusAgendamentos);
     }
     [Authorize]

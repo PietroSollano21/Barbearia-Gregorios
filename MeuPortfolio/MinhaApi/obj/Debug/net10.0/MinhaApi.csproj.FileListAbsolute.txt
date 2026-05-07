@@ -57,6 +57,7 @@ C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\bin\Debug\n
 C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\bin\Debug\net10.0\K4os.Compression.LZ4.dll
 C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\bin\Debug\net10.0\K4os.Compression.LZ4.Streams.dll
 C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\bin\Debug\net10.0\K4os.Hash.xxHash.dll
+C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\bin\Debug\net10.0\MercadoPago.dll
 C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\bin\Debug\net10.0\Microsoft.AspNetCore.OpenApi.dll
 C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\bin\Debug\net10.0\Microsoft.Bcl.AsyncInterfaces.dll
@@ -82,6 +83,7 @@ C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\bin\Debug\n
 C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\bin\Debug\net10.0\Mono.TextTemplating.dll
 C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\bin\Debug\net10.0\MySql.Data.dll
 C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\bin\Debug\net10.0\MySqlConnector.dll
+C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\bin\Debug\net10.0\Newtonsoft.Json.dll
 C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\bin\Debug\net10.0\Pomelo.EntityFrameworkCore.MySql.dll
 C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\bin\Debug\net10.0\Swashbuckle.AspNetCore.Swagger.dll
 C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerGen.dll
@@ -184,5 +186,3 @@ C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\obj\Debug\n
 C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\obj\Debug\net10.0\MinhaApi.pdb
 C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\obj\Debug\net10.0\MinhaApi.genruntimeconfig.cache
 C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\obj\Debug\net10.0\ref\MinhaApi.dll
-C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\bin\Debug\net10.0\MercadoPago.dll
-C:\Users\Windows\Documents\Barbearia-Gregorios\MeuPortfolio\MinhaApi\bin\Debug\net10.0\Newtonsoft.Json.dll

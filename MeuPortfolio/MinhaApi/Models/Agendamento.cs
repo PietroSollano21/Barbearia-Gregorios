@@ -5,7 +5,7 @@ namespace Barbearia.Models
     [Table("agendamento")]
     public class Agendamento
     {
-        public int Id { get; set; }
+        public long? Id { get; set; }
         public string NomeCliente { get; set; } = string.Empty;
         [Column("DataDia")]
         public DateTime Data { get; set; }
@@ -13,6 +13,14 @@ namespace Barbearia.Models
         public string Corte { get; set; } = string.Empty;
         public decimal Valor { get; set; }
         public string statuspagamento { get; set; } = "Pendente";
-
+        public long? PaymentId { get; set; }
+        public bool Cancelado 
+        { 
+            get
+            {
+                DateTime momentocorte = Data.Date.Add(Hora);
+                return momentocorte < DateTime.Now.AddHours(6);
+            }
+        } 
     }
 }

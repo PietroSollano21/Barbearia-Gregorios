@@ -10,7 +10,8 @@ using Barbearia.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
-
+using MercadoPago.Config;
+using MercadoPago.Client.Payment;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,14 +50,14 @@ app.UseAuthentication();
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
-
+app.MapControllers();
 app.UseAuthorization();
 app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}"
 ); 
-
+MercadoPagoConfig.AccessToken = "TEST-7924299277998791-042410-c0ede1ae8aaeb41b355ae90a65caf0bd-2350643855";
 app.MapGet("/testar-conexao",() => 
 {
     try

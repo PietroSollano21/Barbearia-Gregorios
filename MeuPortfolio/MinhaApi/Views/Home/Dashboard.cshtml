@@ -5,6 +5,7 @@
 <h1>Marque seu horário!</h1>
 <a align="center" href="Agenda" class="btn btn-warning">Agendar</a></text>
 </text>
+
 @model List<Barbearia.Models.Agendamento>
     <div class="container mt-5">
         <h2>Meus Agendamentos</h2>
@@ -29,8 +30,24 @@
                             <td>@agendamento.Data.ToString("dd/MM/yyyy")</td>
                             <td>@agendamento.Hora</td>
                             <td>@agendamento.Corte</td>
+                            <td>@if(agendamento.statuspagamento == "Pago")
+                            {
+                                <span class="badge bg-success">Pago</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning text-dark">Pendente</span>
+                            }
+                            <td>
+                               <form action="CancelarAgendamento" method="post">
+                                @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@agendamento.Id" />
+                                    <button type="submit" class="btn btn-danger btn-sm">Cancelar</button>
+                                </form>
+                            </td>
                         </tr>
                     }
+                    
                 </tbody>
             </table>
         }

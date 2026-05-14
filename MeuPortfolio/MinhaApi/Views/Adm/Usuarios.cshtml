@@ -1,0 +1,42 @@
+@{
+    Layout = "_Layout";
+}
+@using Barbearia.Controllers;
+@model IEnumerable<Barbearia.Models.Usuario>
+    <h2>Gestão  de Permissões</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Permissão</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var usuario in Model)
+            {
+                <tr>
+                    <td>@usuario.Nome</td>
+                    <td>@usuario.Email</td>
+                    <td>@(usuario.IsAdmin ? "Administrador" : "Usuário")</td>
+                    <td>
+                        @if (!usuario.IsAdmin)
+                        {
+                            <form asp-action="Promover" method="post" style="display:inline;">
+                                <input type="hidden" name="id" value="@usuario.Id" />
+                                <button type="submit" class="btn btn-sm btn-primary">Promover a Barbeiro</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form asp-action="Rebaixar" method="post" style="display:inline;">
+                                <input type="hidden" name="id" value="@usuario.Id" />
+                                <button type="submit" class="btn btn-sm btn-danger">Rebaixar a Usuário</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>

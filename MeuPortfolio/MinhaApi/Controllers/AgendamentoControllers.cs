@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Barbearia.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Barbearia.Controllers
 {
@@ -19,15 +20,14 @@ namespace Barbearia.Controllers
         private readonly AgendamentoRepository _agendamentoRepository;
         private readonly AppDbContext _context;
         private readonly AgendamentoRepository _repo;
-        public AgendamentoController(AppDbContext context)
-        {
-            _context = context;
-            _repo = new AgendamentoRepository(_context);
-        }   
-        public  AgendamentoController(AgendamentoService agendamentoService, AgendamentoRepository agendamentoRepository)
+        private readonly IConfiguration _configuration;
+       
+        public  AgendamentoController(AgendamentoService agendamentoService, AgendamentoRepository agendamentoRepository, IConfiguration configuration, AppDbContext context)
         {
             _agendamentoService = agendamentoService;
             _agendamentoRepository = agendamentoRepository;
+            _configuration = configuration;
+            _context= context;
         }
 
         [HttpPost]
@@ -44,12 +44,12 @@ namespace Barbearia.Controllers
 
         [Authorize]
         [HttpPost("agendar")]
-        public IActionResult Agendar(Agendamento model)
+        public  IActionResult Agendar(Agendamento model)
         {
            
             if(ModelState.IsValid)
             {
-                var _repo = new AgendamentoRepository(_context);
+                var _repo = new AgendamentoRepository(_context, _configuration);
                 _repo.SalvarAgendamento(model);
                 return RedirectToAction("Dashboard", "Home");
             }
@@ -57,10 +57,12 @@ namespace Barbearia.Controllers
         }
             [Authorize]
         [HttpGet("Agendar")]
-        public IActionResult Agendar(DateTime? dataSelecionada)
+        public async Task<IActionResult> Agendar(DateTime? dataSelecionada)
         {
            
             DateTime data = dataSelecionada ?? DateTime.Today;
+            var BarbeiroNome = await _context.Usuarios.Where(u => u.Perfil == "Barbeiro").Select(u => u.Nome).ToListAsync();
+            ViewBag.BarbeiroNome = BarbeiroNome;
             List<TimeSpan> grandeTotal = new List<TimeSpan>
             {
                 new TimeSpan(9, 0, 0),
@@ -73,12 +75,20 @@ namespace Barbearia.Controllers
                 new TimeSpan(18, 0, 0),
                 new TimeSpan(19, 0, 0)
             };
-            var repo = new AgendamentoRepository(_context);
+            var repo = new AgendamentoRepository(_context, _configuration);
             var ocupados = repo.BuscarHorariosOcupados(data);
             var disponiveis = grandeTotal.Where(h => !ocupados.Contains(h)).ToList();
             ViewBag.HorariosDisponiveis = disponiveis;
             ViewBag.DataSelecionada = data.ToString("yyyy-MM-dd");
             return View();
         }
+        [HttpGet("Agendamento/BuscarBarbeiros")]
+        public async Task<IActionResult> BuscarBabrbeiros()
+        {
+            var Babrbeiros = await _context.Usuarios.Where(u => u.Perfil == "Barbeiro").Select(u => u.Nome).ToListAsync();
+            return Json(Babrbeiros);
+        }
+       
     }
+
 }

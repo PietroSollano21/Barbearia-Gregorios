@@ -30,9 +30,14 @@ using Microsoft.EntityFrameworkCore;
 public class HomeController : Controller
 {
     private readonly AppDbContext _context;
-    public HomeController(AppDbContext context)
+    private readonly AgendamentoRepository _repository;
+    private readonly IConfiguration _configuration;
+
+    public HomeController(AppDbContext context, IConfiguration configuration, AgendamentoRepository agendamentoRepository)
     {
         _context = context;
+        _repository = agendamentoRepository;
+        _configuration = configuration;
     }
     public IActionResult Index()
     {
@@ -42,7 +47,7 @@ public class HomeController : Controller
         }
         return View();
     }
-    // Acesse essa URL no navegador: /Agendamento/AprovarTeste?id=123
+   
 public IActionResult AprovarTeste(long id)
 {
     var agendamento = _context.Agendamentos.Find(id);
@@ -110,7 +115,7 @@ public async Task<IActionResult> ConfirmarAgendamento(string nome,string email ,
         QrCode = resultadoMP.PointOfInteraction.TransactionData.QrCode,
         QrCodeBase64 = resultadoMP.PointOfInteraction.TransactionData.QrCodeBase64
 };
-    return View("Pagamento", ViewModel);
+    return View("Pagamento", "Home");
 }
    
     
@@ -185,10 +190,12 @@ public async Task<IActionResult> Webhook([FromQuery(Name = "data.id")] string da
         {
             
             var client = new PaymentClient();
-           
+             if(agendamento.PaymentId.HasValue)
+             {
+             await client.RefundAsync(agendamento.PaymentId.Value);
+             }
             _context.Agendamentos.Remove(agendamento);
-           await client.RefundAsync(agendamento.PaymentId.Value);
-            
+         
             await _context.SaveChangesAsync();
             TempData["Sucesso"]= "Corte cancelado e dinheiro reembolsado com sucesso!";
         }
@@ -204,6 +211,10 @@ public async Task<IActionResult> Webhook([FromQuery(Name = "data.id")] string da
     [Authorize]
     public IActionResult Dashboard()
     { 
+        if(User.Identity.IsAuthenticated && User.IsInRole("Barbeiro"))
+        {
+            return RedirectToAction("Barbeiro", "Adm");
+        }
         if (_context == null)
         {
             return Content("Err0r: Contexto de banco de dados não disponível.");
@@ -218,7 +229,7 @@ public async Task<IActionResult> Webhook([FromQuery(Name = "data.id")] string da
         {
             return RedirectToAction("Login", "Usuario");
         }
-        var meusAgendamentos = _context.Agendamentos.Where(a => a.NomeCliente == usuario.Nome && a.statuspagamento == "pago").OrderBy(a => a.Data).ToList();
+        var meusAgendamentos = _context.Agendamentos.Where(a => a.NomeCliente == usuario.Nome && (a.statuspagamento == "pago" || a.statuspagamento == "approved")).OrderBy(a => a.Data).ToList();
         return View(meusAgendamentos);
     }
     [Authorize]
@@ -232,11 +243,8 @@ public async Task<IActionResult> Webhook([FromQuery(Name = "data.id")] string da
     {
         if (DateTime.TryParse(dataSelecionada, out DateTime data))
         {
-           
-            var repository = new AgendamentoRepository(_context);
             
-            
-            var horariosOcupadosTimeSpan = repository.BuscarHorariosOcupados(data);
+            var horariosOcupadosTimeSpan = _repository.BuscarHorariosOcupados(data);
             List<string> horariosOcupados = horariosOcupadosTimeSpan
                                                 .Select(t => t.ToString(@"hh\:mm"))
                                                 .ToList();
@@ -279,4 +287,5 @@ public async Task<IActionResult> Webhook([FromQuery(Name = "data.id")] string da
         }
         return Json(new { status = agendamento.statuspagamento });
     }
+    
 }

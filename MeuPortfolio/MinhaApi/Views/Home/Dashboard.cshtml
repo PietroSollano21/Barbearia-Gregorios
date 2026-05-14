@@ -5,6 +5,7 @@
 <h1>Marque seu horário!</h1>
 <a align="center" href="Agenda" class="btn btn-warning">Agendar</a></text>
 </text>
+<p>E barbeiro?@User.IsInRole("Barbeiro") </p>
 
 @model List<Barbearia.Models.Agendamento>
     <div class="container mt-5">
@@ -33,10 +34,6 @@
                             <td>@if(agendamento.statuspagamento == "Pago")
                             {
                                 <span class="badge bg-success">Pago</span>
-                            }
-                            else
-                            {
-                                <span class="badge bg-warning text-dark">Pendente</span>
                             }
                             <td>
                                <form action="CancelarAgendamento" method="post">

@@ -2,6 +2,11 @@ using MySql.Data.MySqlClient;
 using Barbearia.Data;
 using Barbearia.Models;
 using System.Net.Mail;
+using System.ComponentModel.Design;
+using System.Runtime.CompilerServices;
+using Microsoft.AspNetCore.Mvc;
+using Barbearia.Controllers;
+
 
 
 namespace Barbearia.Repositories
@@ -18,13 +23,15 @@ public class UsuarioRepository
         using var conn = _conexao.GetConnection();
         conn.Open();
 
-        string query = "INSERT INTO Usuarios (Nome, Email, SenhaHash) VALUES (@Nome, @Email, @SenhaHash)";
+        string query = "INSERT INTO Usuarios (Nome, Email, SenhaHash, CPF) VALUES (@Nome,@CPF, @Email, @SenhaHash)";
         using var cmd = new MySqlCommand(query, conn);
         cmd.Parameters.AddWithValue("@Nome", usuario.Nome);
         cmd.Parameters.AddWithValue("@Email", usuario.Email);
+        cmd.Parameters.AddWithValue("@CPF", usuario.CPF);
         cmd.Parameters.AddWithValue("@SenhaHash", usuario.SenhaHash);
 
         cmd.ExecuteNonQuery();
+       
     }
 
     
@@ -48,6 +55,7 @@ public class UsuarioRepository
                 Id = reader.GetInt32("Id"),
                 Nome = reader.GetString("Nome"),
                 Email = reader.GetString("Email"),
+                CPF = reader.GetString("CPF"),
                 SenhaHash = reader.GetString("SenhaHash")
             };
 

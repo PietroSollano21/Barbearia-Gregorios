@@ -27,13 +27,18 @@ public AuthController(AppDbContext context, UsuarioRepository repo)
         var usuario = _context.Usuarios.FirstOrDefault(u => u.Email == login.Email && u.SenhaHash == login.Senha);
         if (usuario != null && BCrypt.Net.BCrypt.Verify(login.Senha, usuario.SenhaHash))
         {
-           var claims = new List<Claim>
+           var claims = new List<Claim>// Criamos uma lista de claims para armazenar as informações do usuário
            {
-               new Claim(ClaimTypes.Name, usuario.Email),
-               new Claim("Id", usuario.Id.ToString())
+               new Claim(ClaimTypes.Name, usuario.Email), // Usamos o email como nome de usuário
+               new Claim("Id", usuario.Id.ToString()), // Adiciona o ID do usuário como claim personalizada
+               new Claim(ClaimTypes.Role, usuario.Perfil) // Adiciona a role do usuário como claim
            };
               var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
               await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), new AuthenticationProperties { IsPersistent = true });
+              if(usuario.Perfil == "Barbeiro")
+              {
+                  return RedirectToAction("Barbeiro", "Adm");
+              }
               return RedirectToAction("Dashboard", "Home");
         }
         ViewBag.Erro = "Email ou senha invalidos";

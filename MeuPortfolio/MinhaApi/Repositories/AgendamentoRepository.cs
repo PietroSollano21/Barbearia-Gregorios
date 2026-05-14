@@ -16,10 +16,18 @@ namespace Barbearia.Repositories
     public class AgendamentoRepository
     {
         private readonly AppDbContext _context;
+        private readonly string _connectionString;
+        private readonly IConfiguration Configuration;
 
-        public AgendamentoRepository(AppDbContext context)
+
+        public AgendamentoRepository(AppDbContext context, IConfiguration configuration)
         {
             _context = context;
+            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            if (string.IsNullOrEmpty(_connectionString))
+            {
+                throw new InvalidOperationException("A string de conexão não foi encontrada.");
+            }
         }
 
         public void Adicionar(Agendamento agendamento)
@@ -27,10 +35,12 @@ namespace Barbearia.Repositories
             _context.Agendamentos.Add(agendamento);
             _context.SaveChanges();
         }
+      
+
         [Authorize]
         public void SalvarAgendamento(Agendamento agendamento)
         {
-            using (MySqlConnection conexao = new MySqlConnection(connString))
+            using (MySqlConnection conexao = new MySqlConnection(_connectionString))
             {
                 conexao.Open();
                 string query = "INSERT INTO Agendamento (NomeCliente, DataDia, Hora, Corte, Valor) VALUES (@NomeCliente, @DataDia, @Hora, @Corte, @Valor)";
@@ -43,12 +53,12 @@ namespace Barbearia.Repositories
                 comando.ExecuteNonQuery();
             }
         }
-    private string connString = "server=localhost;database=barbeariadb;user=sollano;password=cavalo";
+   
     public List<TimeSpan> BuscarHorariosOcupados(DateTime data)
 {
     var ocupados = new List<TimeSpan>(); 
 
-    using (var conexao = new MySqlConnection(connString))
+    using (var conexao = new MySqlConnection(_connectionString))
     {
         conexao.Open();
         string sql = "SELECT Hora FROM agendamento WHERE DataDia = @data";

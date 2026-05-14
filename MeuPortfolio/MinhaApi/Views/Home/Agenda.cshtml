@@ -3,7 +3,7 @@
 }
 
 
-
+@using System.Collections.Generic;
 @section Scripts {
     <script>
         function atualizarHorarios(data) {
@@ -34,9 +34,41 @@
                 })
                 .catch(error => console.error('Erro no Fetch:', error));
         }
+        function carregarBarbeiros() {
+            console.log("Carregando barbeiros...");
+            fetch('/Agendamento/BuscarBarbeiros')
+                .then(response => {
+                    console.log("Resposta do servidor:", response);
+                    if (!response.ok) throw new Error('Erro na resposta do servidor');
+                    return response.json();
+                })
+                .then(barbeiros => {
+                    
+                    console.log("Barbeiros recebidos:", barbeiros);
+                    const selectBarbeiro = document.getElementById('BarbeiroNome');
+                    
+                    if (selectBarbeiro) {
+                        selectBarbeiro.innerHTML = '<option value="">Selecione um barbeiro</option>';
+                        barbeiros.forEach(barbeiro => {
+                            const option = document.createElement('option');
+                            option.value = barbeiro;
+                            option.textContent = barbeiro;
+                            selectBarbeiro.appendChild(option);
+                        });
+                    console.log("Barbeiros carregados no select.");
+                    }
+                    else {
+                        console.error("Elemento selectBarbeiro não encontrado.");
+                    }
+                })
+                .catch(error => console.error('Erro no Fetch:', error));
+        }
+         document.addEventListener('DOMContentLoaded', function() {
+            carregarBarbeiros();
+        });
     </script>
 }
-
+    <h1>nome do controller: @ViewBag.BarbeiroNome</h1>
     <form method="post" action="/Home/ConfirmarAgendamento">
         <h3>Agendar Corte</h3>
 
@@ -49,6 +81,7 @@
         <label for="hora">Hora:</label>
         <select type="time" id="hora" name="hora" required>
           <option value="">Selecione um horário</option>
+          <options value="">Carregando Horários</option>
           @if (ViewBag.HorariosDisponiveis != null)
          {
             foreach (var horario in (List<string>)ViewBag.HorariosDisponiveis)
@@ -57,8 +90,23 @@
             }
           }
         </select>
-    
-        
+        </form>
+        <form method="post" action="/Agendamento/BuscarBarbeiros">
+        <div class="form-group" > 
+            <label for="BarbeiroNome">Escolha um barbeiro:</label>
+            <select id="BarbeiroNome" name="BarbeiroNome" type="name" class="form-control" required>
+                <option value="">Selecione um barbeiro</option>
+                @if (ViewBag.Barbeiros != null)
+                {
+                    foreach (var barbeiro in (List<string>)ViewBag.Barbeiros)
+                    {
+                        <option value="@barbeiro">@barbeiro</option>
+                    }
+                }
+                <option value="">Carregando Barbeiros</option>
+                </select>
+        </div>
+        </form>
        <form method="post" action="Home/ConfirmarAgendamento">
         <p>Escolha um serviço</p>
        <label>

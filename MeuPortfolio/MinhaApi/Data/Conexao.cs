@@ -7,8 +7,7 @@ public class Conexao
 
     public Conexao(IConfiguration configuration)
     {
-        _connectionString = configuration.GetConnectionString("DefaultConnection")
-            ?? "Server=localhost;Database=barbeariadb;user=sollano;password=cavalo;";
+        _connectionString = configuration.GetConnectionString("DefaultConnection");
     }
 
     public MySqlConnection GetConnection()

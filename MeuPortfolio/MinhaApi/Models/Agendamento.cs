@@ -21,6 +21,7 @@ namespace Barbearia.Models
                 DateTime momentocorte = Data.Date.Add(Hora);
                 return momentocorte < DateTime.Now.AddHours(6);
             }
-        } 
+        }
+        public string? BarbeiroNome { get; set; } = string.Empty; 
     }
 }

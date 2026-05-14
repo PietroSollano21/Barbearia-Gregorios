@@ -12,20 +12,22 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using MercadoPago.Config;
 using MercadoPago.Client.Payment;
+using Barbearia.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
+builder.Services.AddScoped<AgendamentoService>();
+builder.Services.AddScoped<AgendamentoRepository>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<Conexao>();
 builder.Services.AddScoped<UsuarioRepository>();
-
-   string conexao = "Server=localhost;Database=barbeariadb;user=sollano;password=cavalo;";
-   builder.Services.AddDbContext<AppDbContext>(options =>
-       options.UseMySql(conexao, ServerVersion.AutoDetect(conexao)));
+    var conexao = new Conexao(builder.Configuration).GetConnection();
+   var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    builder.Services.AddDbContext<AppDbContext>(options =>
+       options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
@@ -34,6 +36,10 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.LogoutPath = "/Usuario/Logout";
         options.Cookie.HttpOnly = true;
         options.Cookie.SameSite = SameSiteMode.Strict;
+        options.Events.OnSigningIn = context =>
+        {
+            return Task.CompletedTask;
+        };
     });
     builder.Services.AddControllersWithViews();
 var app = builder.Build();
@@ -57,12 +63,12 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}"
 ); 
-MercadoPagoConfig.AccessToken = "TEST-7924299277998791-042410-c0ede1ae8aaeb41b355ae90a65caf0bd-2350643855";
+
 app.MapGet("/testar-conexao",() => 
 {
     try
     {
-        var connStr = "Server=localhost;Database=barbeariadb;user=sollano;password=cavalo;";
+        var connStr = builder.Configuration.GetConnectionString("DefaultConnection");
         using var conn = new MySqlConnection(connStr);
         conn.Open();
         return Results.Ok("Conexão bem sucedida!");

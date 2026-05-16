@@ -1,15 +1,14 @@
 @{
     Layout = "_Layout";
 }
-<text align="center"><h1>Bem-vindo, @User.Identity.Name!</h1>
+<text align="center"><h1>Bem-vindo, @User.Identity?.Name!</h1>
 <h1>Marque seu horário!</h1>
 <a align="center" href="Agenda" class="btn btn-warning">Agendar</a></text>
 </text>
-<p>E barbeiro?@User.IsInRole("Barbeiro") </p>
-
+<p>e um barbeiro?@User.IsInRole("Barbeiro")</p>
 @model List<Barbearia.Models.Agendamento>
     <div class="container mt-5">
-        <h2>Meus Agendamentos</h2>
+        <h2 style="text-align: center;">Meus Agendamentos</h2>
         @if (Model == null || !Model.Any())
         {
             <p>Você não tem agendamentos.</p>
@@ -31,6 +30,7 @@
                             <td>@agendamento.Data.ToString("dd/MM/yyyy")</td>
                             <td>@agendamento.Hora</td>
                             <td>@agendamento.Corte</td>
+                            <td>@agendamento.BarbeiroNome</td>
                             <td>@if(agendamento.statuspagamento == "Pago")
                             {
                                 <span class="badge bg-success">Pago</span>

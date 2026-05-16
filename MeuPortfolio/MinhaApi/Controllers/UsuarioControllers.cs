@@ -28,9 +28,13 @@ namespace Barbearia.Controllers
         {
             _context = context;
         }
-
+        [HttpGet]
+        public IActionResult Cadastro()
+        {
+            return View();
+        }
         [HttpPost]
-        public IActionResult Cadastro(Usuario usuario)
+        public async Task<IActionResult> Cadastro([Bind("Id,Nome,Email,Senha,CPF")] Usuario usuario)
         {
             var usuarioExistente = _context.Usuarios.FirstOrDefault(u => u.Email == usuario.Email || u.Nome == usuario.Nome); ;
             if (usuarioExistente != null)
@@ -38,31 +42,33 @@ namespace Barbearia.Controllers
                 ViewBag.Erro = "Email ou nome já cadastrados.";
                 return View();
             }
-
-            usuario.SenhaHash = BCrypt.Net.BCrypt.HashPassword(usuario.Senha);
-
-            _context.Usuarios.Add(usuario);
-            _context.SaveChanges();
-
-            return RedirectToAction("Login", "Usuario");
-        }
-        [HttpGet]
-        public async Task<IActionResult> Cadastrar([Bind("Id,Nome,Email,Senha,CPF")] Usuario usuarios)
-        {
+            try{
             if(ModelState.IsValid)
             {
-             if (!IsCpfvalido(usuarios.CPF))
+             if (!IsCpfvalido(usuario.CPF))
         {
             ModelState.AddModelError("CPF", "CPF inválido.");
             return View();
         }
-        _context.Usuarios.Add(usuarios);
+        _context.Usuarios.Add(usuario);
         await _context.SaveChangesAsync();
-        return RedirectToAction(nameof(Dashboard));
             }
-            return View("Cadastro","Usuario");
+           
+            usuario.SenhaHash = BCrypt.Net.BCrypt.HashPassword(usuario.Senha);
+
+            _context.Usuarios.Add(usuario);
+            _context.SaveChanges();
+            
+            return RedirectToAction("Login", "Usuario");
+            }
+            catch(Exception ex)
+            {
+                ViewBag.Erro = "Ocorreu um erro ao cadastrar o usuário: " + ex.Message;
+                return View();
+            }
+        
         }
-        private bool IsCpfvalido(string cpf)
+        private bool IsCpfvalido(string? cpf)
     {
         if(string.IsNullOrEmpty(cpf))
             return false;
@@ -159,7 +165,7 @@ namespace Barbearia.Controllers
         [Authorize]
         public IActionResult Dashboard()
         {
-            if (User.Identity.IsAuthenticated && User.IsInRole("Barbeiro"))
+            if (User.Identity.IsAuthenticated || User.IsInRole("Barbeiro"))
             {
                 return RedirectToAction("Barbeiro", "Adm");
             }

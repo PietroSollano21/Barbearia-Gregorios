@@ -39,6 +39,7 @@ public class HomeController : Controller
         _repository = agendamentoRepository;
         _configuration = configuration;
     }
+    [HttpGet]
     public IActionResult Index()
     {
         if(User.Identity.IsAuthenticated)
@@ -47,6 +48,7 @@ public class HomeController : Controller
         }
         return View();
     }
+    
    
 public IActionResult AprovarTeste(long id)
 {
@@ -60,8 +62,9 @@ public IActionResult AprovarTeste(long id)
     return Content("ID não encontrado.");
 }
     [HttpPost]
-public async Task<IActionResult> ConfirmarAgendamento(string nome,string email ,string data, string hora, string corte, string valor)
+public async Task<IActionResult> ConfirmarAgendamento(string nome,string email ,string data, string hora, string corte, string valor, string CPF, string formapagamento, string statuspagamento, string BarbeiroNome)
 {
+      
     string emailCliente = User.Identity?.Name ?? "cliente@sememail.com";
     MercadoPagoConfig.AccessToken = "TEST-7924299277998791-042410-c0ede1ae8aaeb41b355ae90a65caf0bd-2350643855";
     
@@ -74,16 +77,18 @@ public async Task<IActionResult> ConfirmarAgendamento(string nome,string email ,
         Hora = TimeSpan.Parse(hora),
         Corte = corte,
         Valor = valorDecimal,
-        statuspagamento = "Pendente"
+        statuspagamento = formapagamento == "Pix" ? "Pendente" : "Pagar na hora",
+        BarbeiroNome = BarbeiroNome 
     };
 
     _context.Agendamentos.Add(novoAgendamento);
     await _context.SaveChangesAsync();
-
     
+    if (formapagamento == "Pix")
+    {
     var request = new PaymentCreateRequest
     {
-        TransactionAmount = 01.08m,
+        TransactionAmount = valorDecimal,
         ExternalReference = novoAgendamento.Id.ToString(),
         Description = $"Teste de integraçao Pix",
         PaymentMethodId = "pix",
@@ -94,7 +99,7 @@ public async Task<IActionResult> ConfirmarAgendamento(string nome,string email ,
             Identification = new IdentificationRequest
             {
                 Type = "CPF",
-                Number = "82721197061"
+                Number = CPF
         },},
         
         NotificationUrl = "https://oxygen-egging-said.ngrok-free.dev/pagamento/webhook"
@@ -112,13 +117,26 @@ public async Task<IActionResult> ConfirmarAgendamento(string nome,string email ,
     {
         AgendamentoId = novoAgendamento.Id ?? 0,
         Valor = valorDecimal,
-        QrCode = resultadoMP.PointOfInteraction.TransactionData.QrCode,
-        QrCodeBase64 = resultadoMP.PointOfInteraction.TransactionData.QrCodeBase64
+        CopiaECola = resultadoMP.PointOfInteraction?.TransactionData?.QrCodeBase64 ?? string.Empty,
+        QrCode = resultadoMP.PointOfInteraction?.TransactionData?.QrCode,
+        QrCodeBase64 = resultadoMP.PointOfInteraction?.TransactionData?.QrCodeBase64?? string.Empty,    
 };
-    return View("Pagamento", "Home");
-}
-   
     
+       
+    return View("Pagamento", ViewModel);
+    }
+       else
+        {
+            return View("Dashboard");
+        } 
+      
+}
+
+[HttpGet]
+public IActionResult Pagamento()
+{
+    return View();
+}
 
 
 [HttpPost]
@@ -207,7 +225,7 @@ public async Task<IActionResult> Webhook([FromQuery(Name = "data.id")] string da
 
         return RedirectToAction("Dashboard");
     }
-    
+    [HttpGet]
     [Authorize]
     public IActionResult Dashboard()
     { 
@@ -228,6 +246,10 @@ public async Task<IActionResult> Webhook([FromQuery(Name = "data.id")] string da
         if (usuario == null)
         {
             return RedirectToAction("Login", "Usuario");
+        }
+        if(User != null)
+        {
+            return View();
         }
         var meusAgendamentos = _context.Agendamentos.Where(a => a.NomeCliente == usuario.Nome && (a.statuspagamento == "pago" || a.statuspagamento == "approved")).OrderBy(a => a.Data).ToList();
         return View(meusAgendamentos);
@@ -287,5 +309,4 @@ public async Task<IActionResult> Webhook([FromQuery(Name = "data.id")] string da
         }
         return Json(new { status = agendamento.statuspagamento });
     }
-    
 }

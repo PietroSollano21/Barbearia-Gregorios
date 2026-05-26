@@ -2,10 +2,26 @@ namespace Barbearia.Enums
 {
     public enum TipoCorte
     {
-        Degradê,
+        Degrade,
         Barba,
         Sobrancelha,
-        Bigode,
-        Social
+        Social,
+        Pézinho,
+        CorteMáquina,
+        CorteTesoura,
+        Cavanhaque,
+        RasparGilette,
+        Pigmentação,
+        SocialBarba,
+        DegradeBarba,
+        DegradeLuzes,
+        DegradeReflexo,
+        CortePlatinado,
+        DegradeRisquinhoPigmentaçao,
+        DegradeAlisamento,
+        DegradeAlisamentoBarba,
+        CorteCavanhaque,
+        DegradePigmentaçaoCavanhaque,
+        Alisamento
     }
 }

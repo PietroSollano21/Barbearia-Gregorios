@@ -5,9 +5,10 @@
 <h1>Marque seu horário!</h1>
 <a align="center" href="Agenda" class="btn btn-warning">Agendar</a></text>
 </text>
-<p>e um barbeiro?@User.IsInRole("Barbeiro")</p>
+
 @model List<Barbearia.Models.Agendamento>
     <div class="container mt-5">
+        
         <h2 style="text-align: center;">Meus Agendamentos</h2>
         @if (Model == null || !Model.Any())
         {
@@ -15,12 +16,14 @@
         }
         else
         {
+           
             <table class="table table-striped">
                 <thead>
                     <tr>
                         <th>Data</th>
                         <th>Hora</th>
                         <th>Serviço</th>
+                        <th>Barbeiro</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -35,7 +38,17 @@
                             {
                                 <span class="badge bg-success">Pago</span>
                             }
+                            else if(agendamento.statuspagamento != null && agendamento.statuspagamento.Trim().ToLower() == "pendente")
+                            {
+                                <span class="badge bg-warning text-dark">Pagar na hora</span>
+                            }
+                            else
+                            {
+                               <span class="badge bg-info text-dark">Pagar no Local</span> 
+                            }
+                            </td>
                             <td>
+                                
                                <form action="CancelarAgendamento" method="post">
                                 @Html.AntiForgeryToken()
                                     <input type="hidden" name="id" value="@agendamento.Id" />

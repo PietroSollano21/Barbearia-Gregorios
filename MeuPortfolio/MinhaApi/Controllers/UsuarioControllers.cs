@@ -132,7 +132,7 @@ namespace Barbearia.Controllers
  public async Task<IActionResult> Login(string email, string senha)
         {
             var usuario = _context.Usuarios.FirstOrDefault(u => u.Email == email);
-            if (usuario != null && BCrypt.Net.BCrypt.Verify(senha, usuario.SenhaHash))
+            if (usuario != null && !string.IsNullOrEmpty(usuario.SenhaHash) && BCrypt.Net.BCrypt.Verify(senha, usuario.SenhaHash))
             {
                 var claims = new List<Claim>
                 {

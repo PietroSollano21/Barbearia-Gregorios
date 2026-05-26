@@ -5,6 +5,8 @@ namespace Barbearia.Models
 {
 public class Usuario
 {
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
     public string Nome { get; set; } = string.Empty;

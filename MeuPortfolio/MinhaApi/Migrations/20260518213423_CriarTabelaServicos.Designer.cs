@@ -4,6 +4,7 @@ using Barbearia.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MinhaApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260518213423_CriarTabelaServicos")]
+    partial class CriarTabelaServicos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,14 +44,11 @@ namespace MinhaApi.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("DataDia");
 
-                    b.Property<string>("EmailCliente")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<TimeSpan>("Hora")
                         .HasColumnType("time(6)");
 
                     b.Property<string>("NomeCliente")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<long?>("PaymentId")
@@ -58,6 +58,7 @@ namespace MinhaApi.Migrations
                         .HasColumnType("decimal(65,30)");
 
                     b.Property<string>("statuspagamento")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
@@ -80,9 +81,8 @@ namespace MinhaApi.Migrations
                     b.Property<decimal>("Preco")
                         .HasColumnType("decimal(65,30)");
 
-                    b.Property<string>("Tipo")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<int>("Tipo")
+                        .HasColumnType("int");
 
                     b.HasKey("IdCorte");
 
@@ -94,147 +94,147 @@ namespace MinhaApi.Migrations
                             IdCorte = 1,
                             NomeCorte = "Corte Degradê",
                             Preco = 30.00m,
-                            Tipo = "Degrade"
+                            Tipo = 0
                         },
                         new
                         {
                             IdCorte = 2,
                             NomeCorte = "Barba",
                             Preco = 15.00m,
-                            Tipo = "Barba"
+                            Tipo = 1
                         },
                         new
                         {
                             IdCorte = 3,
                             NomeCorte = "Sobrancelha",
                             Preco = 5.00m,
-                            Tipo = "Sobrancelha"
+                            Tipo = 2
                         },
                         new
                         {
                             IdCorte = 4,
                             NomeCorte = "Corte Social",
                             Preco = 25.00m,
-                            Tipo = "Social"
+                            Tipo = 3
                         },
                         new
                         {
                             IdCorte = 5,
                             NomeCorte = "Pézinho",
                             Preco = 10.00m,
-                            Tipo = "Pézinho"
+                            Tipo = 4
                         },
                         new
                         {
                             IdCorte = 6,
                             NomeCorte = "Cavanhaque",
                             Preco = 10.00m,
-                            Tipo = "Cavanhaque"
+                            Tipo = 7
                         },
                         new
                         {
                             IdCorte = 7,
                             NomeCorte = "Alisamento",
                             Preco = 25.00m,
-                            Tipo = "Alisamento"
+                            Tipo = 20
                         },
                         new
                         {
                             IdCorte = 8,
                             NomeCorte = "Corte só na Tesoura",
                             Preco = 30.00m,
-                            Tipo = "CorteTesoura"
+                            Tipo = 6
                         },
                         new
                         {
                             IdCorte = 9,
                             NomeCorte = "Corte só na Máquina",
                             Preco = 15.00m,
-                            Tipo = "CorteMáquina"
+                            Tipo = 5
                         },
                         new
                         {
                             IdCorte = 10,
                             NomeCorte = "Corte e Cavanhaque",
                             Preco = 40.00m,
-                            Tipo = "CorteCavanhaque"
+                            Tipo = 18
                         },
                         new
                         {
                             IdCorte = 11,
                             NomeCorte = "Corte e Platinado",
                             Preco = 100.00m,
-                            Tipo = "CortePlatinado"
+                            Tipo = 14
                         },
                         new
                         {
                             IdCorte = 12,
                             NomeCorte = "Social e Barba",
                             Preco = 40.00m,
-                            Tipo = "SocialBarba"
+                            Tipo = 10
                         },
                         new
                         {
                             IdCorte = 13,
                             NomeCorte = "Degradê e Alisamento",
                             Preco = 55.00m,
-                            Tipo = "DegradeAlisamento"
+                            Tipo = 16
                         },
                         new
                         {
                             IdCorte = 14,
                             NomeCorte = "Degradê, Alisamento e Barba",
                             Preco = 70.00m,
-                            Tipo = "DegradeAlisamentoBarba"
+                            Tipo = 17
                         },
                         new
                         {
                             IdCorte = 15,
                             NomeCorte = "Degradê e Luzes",
                             Preco = 90.00m,
-                            Tipo = "DegradeLuzes"
+                            Tipo = 12
                         },
                         new
                         {
                             IdCorte = 16,
                             NomeCorte = "Degradê e Reflexo",
                             Preco = 95.00m,
-                            Tipo = "DegradeReflexo"
+                            Tipo = 13
                         },
                         new
                         {
                             IdCorte = 17,
                             NomeCorte = "Degradê, Pigmentação e Cavanhaque",
                             Preco = 65.00m,
-                            Tipo = "DegradePigmentaçaoCavanhaque"
+                            Tipo = 19
                         },
                         new
                         {
                             IdCorte = 18,
                             NomeCorte = "Degradê,Risquinho e Pigmentação",
                             Preco = 65.00m,
-                            Tipo = "DegradeRisquinhoPigmentaçao"
+                            Tipo = 15
                         },
                         new
                         {
                             IdCorte = 19,
                             NomeCorte = "Raspar na Gilette",
                             Preco = 20.00m,
-                            Tipo = "RasparGilette"
+                            Tipo = 8
                         },
                         new
                         {
                             IdCorte = 20,
                             NomeCorte = "Pigmentação",
                             Preco = 25.00m,
-                            Tipo = "Pigmentação"
+                            Tipo = 9
                         },
                         new
                         {
                             IdCorte = 21,
                             NomeCorte = "Degradê e Barba",
                             Preco = 45.00m,
-                            Tipo = "DegradeBarba"
+                            Tipo = 11
                         });
                 });
 

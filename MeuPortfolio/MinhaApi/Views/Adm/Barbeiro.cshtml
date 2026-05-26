@@ -5,27 +5,32 @@
 @model IEnumerable<Barbearia.Models.Agendamento>
 <body>
     <h1 class="text-center">Bem-vindo!<br>Aqui está o seu painel de barbeiro</h1>
-<table>
+<div class="container mt-5">
+<table class="table-stripped">
     <thead>
         <tr>
             <th>Data</th>
             <th>Hora</th>
             <th>Cliente</th>
             <th>Serviço</th>
+            <th>Barbeiro</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var agendamento in Model)
+        @foreach (Barbearia.Models.Agendamento agendamento in Model)
         {
             <tr>
-                <td>@agendamento.Data.ToString("dd/MM/yyyy")</td>
+                <td>@agendamento.Data.ToString(format: "dd/MM/yyyy")</td>
                 <td>@agendamento.Hora</td>
                 <td>@agendamento.NomeCliente</td>
                 <td>@agendamento.Corte</td>
+                <td>@agendamento.BarbeiroNome</td>
+                <td class="badge bg-success">@agendamento.statuspagamento</td>
             </tr>
         }
     </tbody>
 </table>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
         </body>

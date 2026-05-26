@@ -66,7 +66,7 @@
         });
     </script>
 }
-   
+   <h1> horarios: @(ViewBag.HorariosDisponiveis != null ? ((IEnumerable<string>)ViewBag.HorariosDisponiveis).Count():"Nulo")</h1>
 <form method="post" action="/Home/ConfirmarAgendamento">
     <h3>Agendar Corte</h3>
 
@@ -75,15 +75,28 @@
     <br><br>
 
     <label for="data">Data:</label>
-    <input type="date" id="data" name="data" required value="@ViewBag.DataSelecionada" onchange="atualizarHorarios(this.value)">
+    <input type="date" id="data" name="data" min="@DateTime.Today.ToString("yyyy-MM-dd")"required value="@ViewBag.DataSelecionada" onchange="atualizarHorarios(this.value)">
+    <script>
+        document.addEventListener("DOMContentLoaded", function ()
+        {const inputData = document.getElementaryById("dataAgendamento");
+        const hoje = new Date();
+        const hojeFormatado = hoje.getFullYear() + '-'+
+        string(hoje.getMonth()+1),padStart(2, '0')+ '-'
+        string(hoje.getDate()).padStart(2,'0');
+        inputData.min = hojeFormatado;
+        })
+        </script>
     <br><br>
 
     <label for="hora">Hora:</label>
     <select id="hora" name="hora" required>
         <option value="">Selecione um horário</option>
-        @if (ViewBag.HorariosDisponiveis != null)
+        @{
+            var horarios = ViewBag.HorariosDisponiveis as IEnumerable<string>;
+        }
+        @if ( horarios != null)
         {
-            foreach (var horario in (List<string>)ViewBag.HorariosDisponiveis)
+            foreach (var horario in horarios)
             {
                 <option value="@horario">@horario</option>
             }
@@ -109,19 +122,14 @@
     </select>
     <br><br>
 
-    <p>Escolha um serviço</p>
-    <label>
-        <input type="radio" name="corte" value="Degrade" onchange="document.getElementById('valorCorte').value = '30.00'" required> Degrade - R$ 30,00
-    </label><br>
-    <label>
-        <input type="radio" name="corte" value="Social" onchange="document.getElementById('valorCorte').value = '25.00'" required> Social - R$ 25,00
-    </label><br>
-    <label>
-        <input type="radio" name="corte" value="Corte e Barba" onchange="document.getElementById('valorCorte').value = '35.00'" required> Corte e Barba - R$ 35,00
-    </label><br>
-
-    <input type="hidden" id="valorCorte" name="valor" value="" />
-    <br>
+    <label for="IdCorte">Escolha um serviço</label>
+    <select name="IdCorte" id="IdCorte" class="form-control" required>
+        <option value=""> Selecione um Serviço </option>
+        @foreach (var servico in ViewBag.Servicos)
+        {
+            <option value="@servico.IdCorte">@servico.NomeCorte - R$ @servico.Preco.ToString("F2")</option>
+        }
+        </select>
     <h2>Metodos de Pagamento</h2>
     <label>
         <input type="radio" name="formapagamento" value="Pix" required> Pix

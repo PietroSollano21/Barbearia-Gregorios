@@ -6,13 +6,13 @@ namespace Barbearia.Models
     public class Agendamento
     {
         public long? Id { get; set; }
-        public string NomeCliente { get; set; } = string.Empty;
+        public string? NomeCliente { get; set; } = string.Empty;
         [Column("DataDia")]
         public DateTime Data { get; set; }
         public TimeSpan Hora { get; set; }
         public string Corte { get; set; } = string.Empty;
         public decimal Valor { get; set; }
-        public string statuspagamento { get; set; } = "Pendente";
+        public required string? statuspagamento  { get; set; }
         public long? PaymentId { get; set; }
         public bool Cancelado 
         { 
@@ -23,5 +23,6 @@ namespace Barbearia.Models
             }
         }
         public string? BarbeiroNome { get; set; } = string.Empty; 
+        public string EmailCliente { get; set; } = string.Empty;
     }
 }

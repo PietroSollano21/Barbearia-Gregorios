@@ -25,7 +25,8 @@ namespace Barbearia.Controllers
             if (usuario == null || usuario.Perfil != "Barbeiro")            {
                 return RedirectToAction("Login", "Usuario");
             }
-            var agendamentos = await _context.Agendamentos.Where(a => (a.statuspagamento == "approved" ||  a.statuspagamento == "Pago") && a.BarbeiroNome == usuario.Nome).OrderBy(a => a.Data).ThenBy(a => a.Hora).ToListAsync();
+            DateTime dataHoje = DateTime.Today;
+            var agendamentos = await _context.Agendamentos.Where(a => (a.statuspagamento == "Pagar na hora" ||  a.statuspagamento == "Pago") && a.BarbeiroNome == usuario.Nome).Where(a => a.Data.Date >= dataHoje.Date).OrderBy(a => a.Data).ThenBy(a => a.Hora).ToListAsync();
             return View(agendamentos);
         }
         [Authorize(Roles = "Barbeiro")]

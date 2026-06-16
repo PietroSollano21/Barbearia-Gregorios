@@ -13,6 +13,7 @@ namespace Barbearia.Data
         public DbSet<Agendamento> Agendamentos { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Servico> Servicos {get; set;}
+        public DbSet<DiaBarbeiro> DiaBarbeiros { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

@@ -26,7 +26,8 @@ using MercadoPago.Error;
 using MercadoPago.Client.Common;
 using Microsoft.EntityFrameworkCore;
 
-
+namespace Barbearia.Controllers
+{
 public class HomeController : Controller
 {
     private readonly AppDbContext _context;
@@ -63,9 +64,28 @@ public IActionResult AprovarTeste(long id)
     return Content("ID não encontrado.");
 }
     [HttpPost]
-public async Task<IActionResult> ConfirmarAgendamento(string nome,string email ,string data, string hora, string servico, string CPF, string formapagamento, string statuspagamento, string BarbeiroNome, int IdCorte )
+public async Task<IActionResult> ConfirmarAgendamento(string nome,string email ,string data, string hora, string servico, string CPF, string formapagamento, string statuspagamento, string BarbeiroNome, int IdCorte, Agendamento model )
 {
-    var servicoescolhido = await _context.Servicos.FindAsync(IdCorte);
+var barbeiroId = User.Identity.Name;
+    var emailBarbeiro = await _context.Usuarios
+    .Where(u => u.Nome == model.BarbeiroNome)
+    .Select(u => u.Email)
+    .FirstOrDefaultAsync();
+var datasBloqueadas = await _context.DiaBarbeiros
+    .Where(d => !d.Disponivel &&
+                d.Data >= DateTime.Today)
+    .Select(d => d.Data.ToString("yyyy-MM-dd"))
+    .ToListAsync();
+    ViewBag.DatasBloqueadas = datasBloqueadas;
+    Console.WriteLine($"BarbeiroId salvo no banco: {User.Identity?.Name}");
+Console.WriteLine($"BarbeiroNome do agendamento: {model.BarbeiroNome}");
+var dataAgendamento = DateTime.Parse(data);
+Console.WriteLine($"Email {emailBarbeiro} encontrado para o barbeiro.");
+    Console.WriteLine($"Data do agendamento: {model.Data.Date}");
+    
+ var bloqueado = await _context.DiaBarbeiros.AnyAsync(d => d.BarbeiroId == emailBarbeiro && d.Data.Date == dataAgendamento.Date && !d.Disponivel);
+    Console.WriteLine($"Barbeiro bloqueado nesta data? {bloqueado}");
+            var servicoescolhido = await _context.Servicos.FindAsync(IdCorte);
     if(servicoescolhido == null)
         {
             return BadRequest("Escolha um Serviço");
@@ -85,6 +105,13 @@ public async Task<IActionResult> ConfirmarAgendamento(string nome,string email ,
         EmailCliente = emailCliente,
         BarbeiroNome = BarbeiroNome 
     };
+    //var barbeiroFolga = await _context.DiaBarbeiros.AnyAsync(d => d.BarbeiroId == BarbeiroNome && d.Data.Date == novoAgendamento.Data.Date && !d.Disponivel);
+  if(bloqueado)
+            {
+              TempData["Erro"] = "Este barbeiro está de folga nesta data.";
+            return RedirectToAction("Agenda");
+              //return Content("O barbeiro está indisponível nesta data. Por favor, escolha outra data ou barbeiro.");  
+            }
 Console.WriteLine("Email que vai salvar '{novoAgendamento.EmailCliente}'");
     _context.Agendamentos.Add(novoAgendamento);
     await _context.SaveChangesAsync();
@@ -228,16 +255,17 @@ public async Task<IActionResult> Webhook([FromQuery] string id, [FromQuery] stri
     } 
     
     [HttpPost]
+    [Authorize]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> CancelarAgendamento(long? id)
+    public async Task<IActionResult> CancelarAgendamentos(long? id)
     {
-        
+        Console.WriteLine("CHEGOU");
         var agendamento = await _context.Agendamentos.FindAsync(id);
         if (agendamento == null)
         {
             return NotFound();
         }
-        if(!agendamento.Cancelado )
+        if(agendamento.Cancelado )
         {
             TempData["Erro"] = "Nao é possível cancelar um agendamento com menos de 6 horas de antecedência.";
             return RedirectToAction("Dashboard");
@@ -364,4 +392,5 @@ public async Task<IActionResult> Webhook([FromQuery] string id, [FromQuery] stri
         }
         return Json(new { status = agendamento.statuspagamento });
     }
+}
 }

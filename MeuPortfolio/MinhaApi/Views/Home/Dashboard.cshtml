@@ -3,12 +3,15 @@
 }
 <text align="center"><h1>Bem-vindo, @User.Identity?.Name!</h1>
 <h1>Marque seu horário!</h1>
-<a align="center" href="Agenda" class="btn btn-warning">Agendar</a></text>
+<a align="center" href="Agenda" class="btn btn-warning">Agendar</a>
 </text>
+
 
 @model List<Barbearia.Models.Agendamento>
     <div class="container mt-5">
-        
+        <form asp-controller="Home" asp-action="teste" method="post">
+    <button type="submit">TESTE</button>
+</form>
         <h2 style="text-align: center;">Meus Agendamentos</h2>
         @if (Model == null || !Model.Any())
         {
@@ -49,11 +52,12 @@
                             </td>
                             <td>
                                 
-                               <form action="CancelarAgendamento" method="post">
+                                <form action="/Home/CancelarAgendamentos" method="post">
                                 @Html.AntiForgeryToken()
                                     <input type="hidden" name="id" value="@agendamento.Id" />
                                     <button type="submit" class="btn btn-danger btn-sm">Cancelar</button>
-                                </form>
+                               </form>
+                                
                             </td>
                         </tr>
                     }

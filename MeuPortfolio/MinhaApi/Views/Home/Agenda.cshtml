@@ -1,7 +1,15 @@
 @{
     Layout = "_Layout";
 }
-
+@if (TempData["Erro"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["Erro"]
+    </div>
+}
+@{
+    TempData.Remove("Erro");
+}
 
 @using System.Collections.Generic;
 
@@ -76,6 +84,7 @@
 
     <label for="data">Data:</label>
     <input type="date" id="data" name="data" min="@DateTime.Today.ToString("yyyy-MM-dd")"required value="@ViewBag.DataSelecionada" onchange="atualizarHorarios(this.value)">
+    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
     <script>
         document.addEventListener("DOMContentLoaded", function ()
         {const inputData = document.getElementaryById("dataAgendamento");
@@ -84,6 +93,16 @@
         string(hoje.getMonth()+1),padStart(2, '0')+ '-'
         string(hoje.getDate()).padStart(2,'0');
         inputData.min = hojeFormatado;
+        })
+        const folgas = @Html.Raw(Json.Serialize(ViewBag.DatasBloqueadas));
+        flatpickr("#calendarioCliente",
+        {
+            locale: "pt",
+            minDate: "today",
+            dateFormat: "Y-m-d",
+            altInput: true,
+            altFormat: "d/m/Y",
+            disable: folgas
         })
         </script>
     <br><br>
@@ -106,6 +125,9 @@
 
     <label for="BarbeiroNome">Escolha um barbeiro:</label>
     <select id="BarbeiroNome" name="BarbeiroNome" class="form-control" required>
+        <script>
+            fetch('/Home/BuscarFolgas?barbeiro=' + barbeiro)
+            </script>
         <option value="">Selecione um barbeiro</option>
         @if (ViewBag.Barbeiros != null)
         {
@@ -145,4 +167,5 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
